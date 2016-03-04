@@ -1,20 +1,15 @@
 # PROG 02: Represent!
 
-Briefly describe your app here.
+Represent is an app for getting familiar with your Congressional Representatives.
 
 ## Authors
 
-FirstName LastName ([your_email@berkeley.edu](mailto:your_email@berkeley.edu))
+Brian Pugh ([brian.a.pughl@berkeley.edu](mailto:brian.a.pugh@berkeley.edu))
 
 ## Demo Video
 
-See [your demo video title here] (https://link_to_your_video)
-
-## Screenshots
-
-<img src="screenshots/main.png" height="400" alt="Screenshot"/>
+https://www.youtube.com/watch?v=SAwiAdSRvVk&feature=em-upload_owner
 
 ## Acknowledgments
 
-* Hat tip to anyone who's code was used
-* Any other support
+all external code is cited in comments.
