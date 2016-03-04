@@ -4,7 +4,7 @@ Represent is an app for getting familiar with your Congressional Representatives
 
 ## Authors
 
-Brian Pugh ([brian.a.pughl@berkeley.edu](mailto:brian.a.pugh@berkeley.edu))
+Brian Pugh ([brian.a.pugh@berkeley.edu](mailto:brian.a.pugh@berkeley.edu))
 
 ## Demo Video
 
