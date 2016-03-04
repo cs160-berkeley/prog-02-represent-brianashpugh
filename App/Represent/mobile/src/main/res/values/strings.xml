@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Represent</string>
+    <string name="google_app_id">123134233425</string>
+    <string name="title_activity_location_input">LocationInputActivity</string>
+</resources>
