@@ -59,16 +59,20 @@ public class ShakeEventListener implements SensorEventListener {
         // get time
         long now = System.currentTimeMillis();
         long timeElapsed = now - mLastTime;
+        Log.d("bri", new Long(timeElapsed).toString());
 
-        if (timeElapsed > 30000) {
+        if (timeElapsed > 500) {
+            Log.d("bri", "enough time elapsed");
             mLastTime = now;
 
             // store last sensor data
             lastX = x;
             lastY = y;
             lastZ = z;
-            if (totalSpeed > 1020) {
+            if (totalSpeed > 100.0) {
+                Log.d("bri", "sufficient speed");
                 mShakeListener.onShake();
+                resetShakeParameters();
             }
         }
     }

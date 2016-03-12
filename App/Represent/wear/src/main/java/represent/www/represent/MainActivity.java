@@ -39,7 +39,6 @@ public class MainActivity extends WearableActivity {
             public void onShake() {
                 Log.d("bri", "onShake fired...");
                 Intent shakenIntent = new Intent(getBaseContext(), WatchToPhoneService.class);
-                shakenIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 shakenIntent.putExtra(WatchToPhoneService.SHAKE_FLAG, true);
                 startService(shakenIntent);
             }

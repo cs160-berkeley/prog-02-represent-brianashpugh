@@ -17,7 +17,7 @@ Brian Pugh ([brian.a.pugh@berkeley.edu](mailto:brian.a.pugh@berkeley.edu))
 
 ## Demo Video
 
-https://www.youtube.com/watch?v=SAwiAdSRvVk&feature=em-upload_owner
+https://www.youtube.com/watch?v=_ymjHqMi_bo&feature=em-upload_owner
 
 ## Acknowledgments
 
