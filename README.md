@@ -8,12 +8,12 @@ Brian Pugh ([brian.a.pugh@berkeley.edu](mailto:brian.a.pugh@berkeley.edu))
 
 ## Screenshots
 
-(screenshots/scr1.png)
-(screenshots/scr2.png)
-(screenshots/scr3.png)
-(screenshots/scr4.png)
-(screenshots/scr5.png)
-(screenshots/scr6.png)
+![](screenshots/scr1.png)
+![](screenshots/scr2.png)
+![](screenshots/scr3.png)
+![](screenshots/scr4.png)
+![](screenshots/scr5.png)
+![](screenshots/scr6.png)
 
 ## Demo Video
 
