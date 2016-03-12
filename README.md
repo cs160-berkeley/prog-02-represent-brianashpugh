@@ -8,12 +8,12 @@ Brian Pugh ([brian.a.pugh@berkeley.edu](mailto:brian.a.pugh@berkeley.edu))
 
 ## Screenshots
 
-![alt tag](http://imgur.com/qNu4M8A)
-![alt tag](http://imgur.com/ubREE3i)
-![alt tag](http://imgur.com/HMRrGM3)
-![alt tag](http://imgur.com/Kq5IIe7)
-![alt tag](http://imgur.com/jGoPvno)
-![alt tag](http://imgur.com/9nlOtCW)
+(screenshots/scr1.png)
+(screenshots/scr2.png)
+(screenshots/scr3.png)
+(screenshots/scr4.png)
+(screenshots/scr5.png)
+(screenshots/scr6.png)
 
 ## Demo Video
 
