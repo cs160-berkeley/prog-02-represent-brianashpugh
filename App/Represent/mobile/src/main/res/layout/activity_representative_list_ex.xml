@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".RepresentativeListActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/location_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textSize="18dp"
+        android:text="Representatives for Current Location"
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:background="#111111"
+         />
+
+    <FrameLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/representative_list_view"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="2dp"
+            android:id="@+id/rep_list_item">
+
+            <ImageView
+                android:id="@+id/representative_image"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="false"
+                android:layout_width="120dp"
+                android:layout_height="125dp"
+                android:padding="10dp"
+                android:src="@drawable/barbara_boxer_circle_small"
+                android:elevation="0dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight=".7"
+                android:layout_height="match_parent"
+                android:paddingLeft="0dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/representative_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
+                    android:textColor="#222222"
+                    android:text="Sen. Barbara Boxer"
+                    android:fontFamily="serif"
+                    android:layout_marginTop="5dp" />
+
+                <TextView
+                    android:id="@+id/representative_district"
+                    android:textColor="#444444"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="California"/>
+
+                <TextView
+                    android:id="@+id/representative_website"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#2222ff"
+                    android:text="boxer.senate.gov"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_weight=".1"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/email_icon_small"/>
+
+                    <TextView
+                        android:id="@+id/representative_email"
+                        android:textColor="#222222"
+                        android:layout_width="0dp"
+                        android:layout_weight=".9"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text="barbara@boxer.senate.gov"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="2dp">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_weight=".1"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/twitter_icon"
+                        android:layout_gravity="center_vertical" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_weight=".9"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp" >
+
+
+                        <TextView
+                            android:id="@+id/representative_twitter"
+                            android:textColor="#444444"
+                            android:textSize="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="-2dp"
+                            android:text="\@SenatorBoxer"/>
+
+                        <TextView
+                            android:id="@+id/representative_last_tweet"
+                            android:textColor="#111111"
+                            android:textSize="14dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scrollHorizontally="true"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="\@SenateDems stood united at the Supreme Court today to tell @Senate_GOPs: #DoYourJob"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:id="@+id/imageView3"
+            android:layout_marginTop="0dp"
+            android:background="#0087ed"
+            android:elevation="3dp" />
+
+    </FrameLayout>
+
+</LinearLayout>

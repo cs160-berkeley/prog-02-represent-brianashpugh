@@ -34,7 +34,6 @@ public class WatchToPhoneService extends Service implements GoogleApiClient.Conn
                 .build();
         //and actually connect it
         watchApiClient.connect();
-
     }
 
     @Override
@@ -52,7 +51,7 @@ public class WatchToPhoneService extends Service implements GoogleApiClient.Conn
                     }
                     else if (intent.getBooleanExtra(REP_SELECTED_FLAG, false)) {
                         Log.d("watch", "sending rep selection to phone...");
-                        sendMessage("/rep_selected", intent.getStringExtra("REP_NAME"));
+                        sendMessage("/rep_selected", intent.getStringExtra("REP_ID"));
                     }
                 }
             }

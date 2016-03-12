@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -9,29 +9,76 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2012 General Election Results"/>
+        <ImageView
+            android:layout_width="108dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/romney" />
+
+        <ImageView
+            android:layout_width="108dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/obama"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:background="#AA000000">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:paddingTop="3dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/obama_percentage"
+                android:fontFamily="serif"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:textSize="24dp"
+                android:text="89%"
+                android:textAlignment="textEnd"
+                android:paddingRight="15dp"/>
+
+            <TextView
+                android:id="@+id/romney_percentage"
+                android:fontFamily="serif"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:textSize="24dp"
+                android:text="11%"
+                android:paddingLeft="15dp"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/location_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:fontFamily="serif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Counting County"
+            android:textSize="13dp"
+            android:textAlignment="center"
+            android:layout_marginTop="0dp"/>
 
         <TextView
-            android:id="@+id/obama_percentage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/romney_percentage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:id="@+id/vote_count"
+            android:fontFamily="serif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="100000 Votes"
+            android:textSize="13dp"
+            android:textAlignment="center"
+            android:layout_marginBottom="16dp"/>
 
     </LinearLayout>
 
 
-</LinearLayout>
+</FrameLayout>

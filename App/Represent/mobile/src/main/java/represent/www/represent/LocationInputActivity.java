@@ -1,11 +1,12 @@
 package represent.www.represent;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,34 +14,145 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationServices;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class LocationInputActivity extends AppCompatActivity {
+import represent.www.represent.api.GeocodingAPI;
+import represent.www.represent.api.RepsResponder;
+import represent.www.represent.api.VotingDataAPI;
+import represent.www.represent.models.Representative;
+import represent.www.represent.models.WatchRep;
 
-    List<String> districts;
+public class LocationInputActivity extends AppCompatActivity implements
+        LocationListener, GeolocationResponder, RepsResponder,
+        ConnectionCallbacks, OnConnectionFailedListener {
+
+    RepDatabase repDatabase;
+    GeocodingAPI geocodingApi;
+    private VotingDataAPI votingDataApi;
+    VotingData votingData;
+    List<String> repIds;
+    Location mLastLocation;
+    TwitterSession twitterSession;
+    boolean locationFetched = false;
+
+    private boolean repsFetched;
+    private boolean votingFetched;
+    private boolean zipCodeUsed = false;
+    private String county;
+    private String state;
+    private GoogleApiClient mGoogleApiClient;
+    private String zipCode;
+    private boolean receivedShake;
+    private TwitterAuthClient twitterAuthClient;
+    private boolean currentLocationClicked = false;
+    private boolean onConnectedRan;
+    private boolean authInProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_input);
 
-        String[] districtsArr = {"8th District of California", "5th District of Oklahoma", "9th District of Texas",
-                "2nd District of Florida", "1st District of Alabama", "5th District of New Hampshire"};
-        districts = Arrays.asList(districtsArr);
+        onConnectedRan = false;
+        final LocationInputActivity thisActivity = this;
+        currentLocationClicked = false;
+
+        LocationManager manager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            Toast.makeText(this, "Enable location services for accurate data", Toast.LENGTH_SHORT).show();
+        }
+
+        Log.d("phone", "Setting up Twitter login...");
+        if (twitterAuthClient == null || twitterSession == null) {
+            this.twitterAuthClient = new TwitterAuthClient();
+            if (!authInProgress) {
+                authInProgress = true;
+                this.twitterAuthClient.authorize(this, new Callback<TwitterSession>() {
+                    @Override
+                    public void success(Result<TwitterSession> result) {
+                        Log.d("api", "Twitter login success: " + result.data.toString());
+                        authInProgress = false;
+                        thisActivity.twitterSession = result.data;
+                        thisActivity.onTwitterLoginSuccessful();
+                    }
+
+                    @Override
+                    public void failure(TwitterException e) {
+                        Log.d("api", "Twitter login failed: " + e.getMessage());
+                    }
+                });
+            }
+        }
+        else {
+            Log.d("api", "Skipped Twitter login...");
+            thisActivity.onTwitterLoginSuccessful();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.twitterAuthClient.onActivityResult(requestCode, resultCode, data);
+    }
+
+    protected void onTwitterLoginSuccessful() {
+
+        final LocationInputActivity thisActivity = this;
+        this.repDatabase = RepDatabase.getInstance(this, this.twitterSession, this);
+        this.votingDataApi = new VotingDataAPI(this);
+
+        this.votingFetched = false;
+        this.repsFetched = false;
+
+        // Intercept if we need a random location from a shake
+        Intent intent = getIntent();
+        this.receivedShake = false;
+        if (intent != null) {
+            if (intent.getBooleanExtra("SHAKE", false)) {
+                Log.d("phone", "LocationInputActivity received a shake...");
+                receivedShake = true;
+                MainApplication application = (MainApplication) getApplication();
+                this.onLocationFetched(false, null, application.getRandomLocationUtil().getRandomLocation());
+                return;
+            }
+        }
 
         Button byCurrentLocationButton = (Button) findViewById(R.id.by_current_location_button);
         byCurrentLocationButton.setTransformationMethod(null);
+
         byCurrentLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // This needs to get the representatives
-
-                openRepresentativeListActivity(false, "", new ArrayList<Representative>());
+                // Get current location, then figure out the county
+                onConnectedRan = false;
+                if (!currentLocationClicked) {
+                    zipCodeUsed = false;
+                    locationFetched = false;
+                    currentLocationClicked = true;
+                    if (thisActivity.mGoogleApiClient == null) {
+                        thisActivity.mGoogleApiClient = new GoogleApiClient.Builder(thisActivity)
+                                .addApi(LocationServices.API)
+                                .addConnectionCallbacks(thisActivity)
+                                .addOnConnectionFailedListener(thisActivity)
+                                .build();
+                    }
+                    Log.d("api", "Connecting to Google Play Services...");
+                    thisActivity.mGoogleApiClient.connect();
+                }
             }
         });
 
@@ -55,45 +167,153 @@ public class LocationInputActivity extends AppCompatActivity {
             }
         });
 
-        // ON ZIP CODE ENTER
+        // ON ZIP CODE ENTERED
 
         byZipCodeField.setImeActionLabel("Find", KeyEvent.KEYCODE_ENTER);
-        final LocationInputActivity thisActivity = this;
         byZipCodeField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.d("phone", "Keyboard actionId: " + actionId + ", KeyEvent: " + event + ".");
-                if (actionId == 66 || (event!= null && event.getAction() == KeyEvent.KEYCODE_ENTER)) {
+                if (actionId == 66 || (event != null && event.getAction() == KeyEvent.KEYCODE_ENTER) || actionId == EditorInfo.IME_ACTION_DONE) {
+                    onConnectedRan = false;
+                    thisActivity.zipCodeUsed = true;
                     thisActivity.onZipCodeEntered(v.getText().toString());
+                    locationFetched = false;
                 }
                 return true;
             }
         });
     }
 
-    protected void onZipCodeEntered(String zipCode) {
-        openRepresentativeListActivity(true, zipCode, new ArrayList<Representative>());
+    @Override
+    public void onConnected(Bundle bundle) {
+        try {
+
+            if (locationFetched == false && !onConnectedRan) {
+                onConnectedRan = true;
+
+                Log.d("phone", "Getting location from Google Play API...");
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                        mGoogleApiClient);
+                Log.d("api", "Location fetched: " + mLastLocation);
+                if (mLastLocation != null) {
+                    this.onLocationFetched(false, null, mLastLocation);
+                }
+                mGoogleApiClient.disconnect();
+            }
+        }
+        catch (SecurityException e) {
+            Log.d("api", "Insufficient permissions for getting location: " + e.getMessage());
+        }
     }
 
-    protected void openRepresentativeListActivity(boolean zipCodeUsed, String zipCode, List<Representative> representatives) {
+    protected void onZipCodeEntered(String zipCode) {
+        this.zipCode = zipCode;
+        onLocationFetched(true, zipCode, null);
+    }
 
-        // TODO: attach location information to intents
-
-        Intent watchIntent = new Intent(this, PhoneToWatchService.class);
-        Intent representativeListIntent = new Intent(this, RepresentativeList.class);
-
+    public void onLocationFetched(boolean zipCodeUsed, String zipCode, Location location) {
+        locationFetched = true;
+        this.geocodingApi = new GeocodingAPI(this);
         if (zipCodeUsed) {
-            watchIntent.putExtra("LOCATION", zipCode);
-            representativeListIntent.putExtra("LOCATION", zipCode);
+            Log.d("api", "Location fetched: " + zipCode);
+            repDatabase.fetchRepresentatives(zipCode);
+            this.geocodingApi.getCountyForZipCode(zipCode);
         }
         else {
-            Collections.shuffle(districts);
-            watchIntent.putExtra("LOCATION", districts.get(0));
-            representativeListIntent.putExtra("LOCATION", districts.get(0));
+            Log.d("api", "Location fetched: " + ((Double) location.getLatitude()).toString() + ", " + ((Double) location.getLongitude()).toString() + "...");
+            repDatabase.fetchRepresentatives(location);
+            geocodingApi.getCountyForLocation(location);
         }
-        Log.d("phone", "starting PhoneToWatch service...");
-        this.startService(watchIntent);
-        startActivity(representativeListIntent);
+    }
+
+    @Override
+    public void onGeolocationFetched(List<String> counties, List<String> states) {
+        if (counties.size() > 0 && states.size() > 0) {
+            this.county = counties.get(0);
+            this.state = states.get(0);
+            Log.d("api", "Fetched geolocation: " + this.county + ", " + this.state);
+            this.votingData = votingDataApi.getData(county);
+            this.votingFetched = true;
+            ApisFinished();
+        }
+    }
+
+    public void onRepsFetched(List<String> repIds) {
+        this.repsFetched = true;
+        this.repIds = repIds;
+        Log.d("api", "Fetched " + ((Integer) repIds.size()).toString() + " reps...");
+        ApisFinished();
+    }
+
+    void ApisFinished() {
+        if (this.votingFetched && this.repsFetched) {
+            Log.d("api", "Data fetching finished. Sending data to watch...");
+
+            currentLocationClicked = false;
+
+            Intent representativeListIntent = new Intent(this, RepresentativeListActivity.class);
+            representativeListIntent.putStringArrayListExtra("REP_IDS", new ArrayList<>(this.repIds));
+
+            Intent watchIntent = new Intent(this, PhoneToWatchService.class);
+            watchIntent.putExtra("REPS_LOADED", true);
+            watchIntent.putStringArrayListExtra("REP_IDS", new ArrayList<>(this.repIds));
+            watchIntent.putExtra("VOTING_DATA", this.votingData);
+
+            List<WatchRep> watchReps = new ArrayList<>();
+            ArrayList<Representative> reps = new ArrayList<>();
+            for (String repId : this.repIds) {
+                Representative rep = repDatabase.getRepresentative(repId);
+                WatchRep watchRep = rep.toWatchRep();
+                watchIntent.putExtra(repId, watchRep);
+            }
+
+            if (receivedShake) {
+                representativeListIntent.putExtra("LOCATION_TYPE", "RANDOM");
+                receivedShake = false;
+            }
+            else if (zipCodeUsed) {
+                representativeListIntent.putExtra("LOCATION_TYPE", "ZIP_CODE");
+                representativeListIntent.putExtra("LOCATION", this.zipCode);
+                zipCodeUsed = false;
+            }
+            else {
+                representativeListIntent.putExtra("LOCATION_TYPE", "LOCATION");
+            }
+            Log.d("phone", "starting PhoneToWatch service...");
+            this.votingFetched = false;
+            this.repsFetched = false;
+            this.startService(watchIntent);
+            this.startActivity(representativeListIntent);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
 

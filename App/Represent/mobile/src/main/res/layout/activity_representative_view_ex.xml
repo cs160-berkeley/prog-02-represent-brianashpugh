@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="196dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/barbara_boxer_cover_small" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:background="#0087ed"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-30dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="2dp"
+        android:elevation="5dp">
+
+        <TextView
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Rep. Barbara Boxer"
+            android:id="@+id/textView2"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="#f9f9f9"
+            android:textSize="26dp"
+            android:fontFamily="serif"
+            android:layout_marginTop="2dp" />
+
+        <TextView
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Democrat - Term ends January 2016"
+            android:id="@+id/textView3"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="#cccccc"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="RECENT BILLS"
+        android:id="@+id/textView6"
+        android:background="#cfcfcf"
+        android:textAlignment="viewEnd"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:textSize="16dp"
+        android:layout_marginLeft="15dp"
+        android:elevation="4dp"
+        android:fontFamily="serif" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/textView7"
+            android:layout_marginLeft="15dp"
+            android:text="May 3"
+            android:textSize="16dp"
+            android:textColor="#222222"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/textView8"
+            android:layout_marginLeft="15dp"
+            android:text="Economic Development Revitalization Act of 2009"
+            android:textSize="16dp"
+            android:textColor="#222222"
+            android:layout_marginTop="6dp"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="305dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="CURRENT COMMITTEES"
+            android:id="@+id/textView4"
+            android:background="#cfcfcf"
+            android:textAlignment="viewEnd"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/textView5"
+            android:layout_marginLeft="10dp"
+            android:text="Appropriations\nLabor, Health and...\nMilitary Construction...\nState, Foreign Operations...\nThe Budget\nDemocratic Steering and..."
+            android:textSize="16dp"
+            android:textColor="#222222"
+            android:layout_marginTop="6dp" />
+    </LinearLayout>
+
+</LinearLayout>

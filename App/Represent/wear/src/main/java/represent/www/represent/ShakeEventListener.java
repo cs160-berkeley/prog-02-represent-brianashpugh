@@ -44,7 +44,7 @@ public class ShakeEventListener implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent se) {
-        Log.d("bri", "onSensorChanged fired...");
+        //Log.d("bri", "onSensorChanged fired...");
 
         // get sensor data
         float x = se.values[0];
@@ -60,14 +60,14 @@ public class ShakeEventListener implements SensorEventListener {
         long now = System.currentTimeMillis();
         long timeElapsed = now - mLastTime;
 
-        if (timeElapsed > 100) {
+        if (timeElapsed > 30000) {
             mLastTime = now;
 
             // store last sensor data
             lastX = x;
             lastY = y;
             lastZ = z;
-            if (totalSpeed > 100) {
+            if (totalSpeed > 1020) {
                 mShakeListener.onShake();
             }
         }

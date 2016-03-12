@@ -22,9 +22,11 @@
             android:theme="@android:style/Theme.DeviceDefault.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".RepListActivity"
+            android:label="@string/app_name">
         </activity>
 
         <service
@@ -39,7 +41,11 @@
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d406fbbaadb3f39332d7ec7172afc9b6df39d0bf" />
     </application>
 
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

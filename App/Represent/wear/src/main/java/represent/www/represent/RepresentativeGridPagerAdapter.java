@@ -2,42 +2,41 @@ package represent.www.represent;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.wearable.view.GridPagerAdapter;
 import android.support.wearable.view.GridViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import represent.www.represent.models.VotingData;
+import represent.www.represent.models.WatchRep;
+
 /**
  * Created by Brian on 3/1/16.
  */
 public class RepresentativeGridPagerAdapter extends GridPagerAdapter {
 
-    String zipCode;
-    GridViewPager gridViewPager;
+    private final VotingData votingData;
+    private GridViewPager gridViewPager;
+    private List<WatchRep> watchReps;
 
-    String[] districtsArr = {"8th District of California", "5th District of Oklahoma", "9th District of Texas",
-            "2nd District of Florida", "1st District of Alabama", "5th District of New Hampshire"};
-    List<String> districts;
-    String district;
-
-    private final List<Representative> reps = new ArrayList<>();
-
-    RepresentativeGridPagerAdapter(GridViewPager gridViewPager) {
+    RepresentativeGridPagerAdapter(GridViewPager gridViewPager, List<WatchRep> watchReps, VotingData votingData) {
         this.gridViewPager = gridViewPager;
-        districts = Arrays.asList(districtsArr);
-        this.district = districts.get(0);
-        reps.add(0, new Representative("Senator", "Barbara Boxer", "Democrat"));
-        reps.add(1, new Representative("Representative", "Barbara Lee", "Democrat"));
-        reps.add(2, new Representative("Senator", "Dianne Feinstein", "Democrat"));
+        this.watchReps = watchReps;
+        this.votingData = votingData;
     }
 
     @Override
@@ -47,36 +46,56 @@ public class RepresentativeGridPagerAdapter extends GridPagerAdapter {
 
     @Override
     public int getColumnCount(int i) {
-        return 3;
+        return this.watchReps.size();
     }
 
     @Override
     public Object instantiateItem(ViewGroup viewGroup, int row, int col) {
         final View view;
-        Integer romneyPerc = ThreadLocalRandom.current().nextInt(0, 50);
-        Integer obamaPerc = ThreadLocalRandom.current().nextInt(0, 50);
 
         if (row == 0) {
             view = LayoutInflater.from(gridViewPager.getContext()).inflate(R.layout.rep, viewGroup, false);
 
             final TextView repName = (TextView) view.findViewById(R.id.rep_name);
-            StringBuilder repTitleBuilder = new StringBuilder();
-            final Representative rep = this.reps.get(col);
-            repTitleBuilder.append(rep.title);
-            repTitleBuilder.append(" ");
-            repTitleBuilder.append(rep.name);
-            repName.setText(repTitleBuilder.toString());
+            final WatchRep watchRep = this.watchReps.get(col);
+            repName.setText(watchRep.getTitledAbbrevName());
 
-            TextView repParty = (TextView) view.findViewById(R.id.rep_party);
-            repParty.setText(rep.party);
+            ImageView repImage = (ImageView) view.findViewById(R.id.rep_image_circle);
+            repImage.setImageBitmap(watchRep.getImage());
 
-            LinearLayout layout = (LinearLayout) view.findViewById(R.id.rep_layout);
+            TextView repParty = (TextView) view.findViewById(R.id.party);
+            repParty.setText(watchRep.getPartyAbbrev());
+
+            LinearLayout layer = (LinearLayout) view.findViewById(R.id.layer);
+            if (watchRep.getPartyAbbrev().equals("REP")) {
+                layer.setBackgroundColor(Color.parseColor("#CA2600"));
+            } else if (watchRep.getPartyAbbrev().equals("IND")) {
+                layer.setBackgroundColor(Color.parseColor("#1E7744"));
+            }
+
+            TextView repDistrict = (TextView) view.findViewById(R.id.district);
+            LinearLayout repFullDistrict = (LinearLayout) view.findViewById(R.id.full_district);
+            LinearLayout parent = (LinearLayout) view.findViewById(R.id.divider_parent);
+            if (watchRep.getDistrict() == null) {
+                parent.removeView(repFullDistrict);
+                parent.removeView(view.findViewById(R.id.divider_one));
+            }
+            else {
+                repDistrict.setText(ordinal(Integer.parseInt(watchRep.getDistrict())));
+            }
+
+            TextView repState = (TextView) view.findViewById(R.id.state);
+            repState.setText(watchRep.getState());
+            Log.d("watch", "state" + watchRep.getState());
+
+
+            FrameLayout layout = (FrameLayout) view.findViewById(R.id.rep_layout);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent watchToPhoneIntent = new Intent(gridViewPager.getContext(), WatchToPhoneService.class);
                     watchToPhoneIntent.putExtra(WatchToPhoneService.REP_SELECTED_FLAG, true);
-                    watchToPhoneIntent.putExtra("REP_NAME", rep.name);
+                    watchToPhoneIntent.putExtra("REP_ID", watchRep.getRepId());
                     gridViewPager.getContext().startService(watchToPhoneIntent);
                 }
             });
@@ -84,15 +103,16 @@ public class RepresentativeGridPagerAdapter extends GridPagerAdapter {
         else {
             view = LayoutInflater.from(gridViewPager.getContext()).inflate(R.layout.election, viewGroup, false);
             TextView locationText = (TextView) view.findViewById(R.id.location_text);
-
-            locationText.setText(district);
-
+            locationText.setText(votingData.getCounty() + " County, " + votingData.getState());
 
             TextView obamaPercText = (TextView) view.findViewById(R.id.obama_percentage);
-            obamaPercText.setText("Obama: " + obamaPerc.toString() + "%");
+            obamaPercText.setText(votingData.getObamaPerc() + "%");
 
             TextView romneyPercText = (TextView) view.findViewById(R.id.romney_percentage);
-            romneyPercText.setText("Romney: " + romneyPerc.toString() + "%");
+            romneyPercText.setText(votingData.getRomneyPerc() + "%");
+
+            TextView voteCountText = (TextView) view.findViewById(R.id.vote_count);
+            voteCountText.setText(getRoundOffValue(votingData.getVoteCount()) + " Votes");
         }
         viewGroup.addView(view);
         return view;
@@ -103,13 +123,27 @@ public class RepresentativeGridPagerAdapter extends GridPagerAdapter {
         viewGroup.removeView((View) view);
     }
 
-    public void shuffleItems() {
-        Collections.shuffle(this.reps);
-    }
-
     @Override
     public boolean isViewFromObject(View view, Object o) {
         return view.equals(o);
     }
 
+    public static String ordinal(int i) {
+        String[] sufixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+        switch (i % 100) {
+            case 11:
+            case 12:
+            case 13:
+                return i + "th";
+            default:
+                return i + sufixes[i % 10];
+
+        }
+    }
+
+    public static String getRoundOffValue(String value){
+        Double val = Double.parseDouble(value);
+        DecimalFormat df = new DecimalFormat("###,###,###,###,###");
+        return df.format(val);
+    }
 }

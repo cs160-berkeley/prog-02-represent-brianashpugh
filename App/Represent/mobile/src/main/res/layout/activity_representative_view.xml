@@ -1,80 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/representative_view_parent"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#f0f0f0"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context="represent.www.represent.RepresentativeViewActivity"
-    android:orientation="vertical">
+    android:background="#EEEEEE">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="196dp" >
+    <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="222dp"
+    android:id="@+id/cover_image" />
 
-        <ImageView
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/rep_view_banner"
+        android:orientation="vertical"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:background="#0087ed"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-30dp"
+        android:paddingBottom="4dp"
+        android:paddingTop="2dp"
+        android:elevation="3dp">
+
+        <TextView
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/cover_image"/>
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/representative_title"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="#f9f9f9"
+            android:textSize="26dp"
+            android:fontFamily="serif"
+            android:layout_marginTop="-2dp" />
+
+        <TextView
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/representative_subtitle"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="#cccccc"
+            android:textSize="14dp"
+            android:layout_marginTop="-3dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="RECENT BILLS"
+        android:id="@+id/recent_bills"
+        android:background="#dddddd"
+        android:textAlignment="viewEnd"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginTop="6dp"
+        android:textSize="16dp"
+        android:layout_marginLeft="15dp"
+        android:elevation="2dp"
+        android:fontFamily="serif" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bills_parent"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="13dp">
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="CURRENT COMMITTEES"
+            android:fontFamily="serif"
+            android:id="@+id/current_committees"
+            android:elevation="2dp"
+            android:background="#dddddd"
+            android:textAlignment="viewEnd"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:textSize="16dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#00222222"
-            android:layout_alignParentBottom="true"
             android:orientation="vertical"
-            android:gravity="center_horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#ffffff"
-                android:textSize="22dp"
-                android:textAlignment="center"
-                android:id="@+id/representative_title"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#dddddd"
-                android:textSize="16dp"
-                android:textAlignment="center"
-                android:layout_marginTop="-5dp"
-                android:id="@+id/representative_subtitle"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/committees_parent"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="0dp">
         </LinearLayout>
-
-    </RelativeLayout>
-
-    <TextView
-        android:layout_marginTop="5dp"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Current Committees"
-        android:textSize="18dp"
-        android:textColor="#020202"
-        android:layout_marginLeft="10dp"/>
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/current_committees"
-        android:textColor="#111111"
-        android:layout_marginLeft="20dp"/>
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Recent Bills"
-        android:textSize="18dp"
-        android:textColor="#020202"
-        android:layout_marginLeft="10dp"/>
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/recent_bills"
-        android:textColor="#111111"
-        android:layout_marginLeft="20dp"/>
+    </LinearLayout>
 
 </LinearLayout>

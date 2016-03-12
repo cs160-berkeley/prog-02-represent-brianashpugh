@@ -1,116 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:id="@+id/representative_list_item"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentEnd="true"
+    android:layout_marginBottom="5dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_gravity="top"
+        android:id="@+id/banner"
+        android:background="#0087ed"
+        android:elevation="2dp" />
 
     <LinearLayout
-        android:layout_width="110dp"
-        android:layout_height="120dp"
-        android:orientation="vertical"
-        android:layout_gravity="top">
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:elevation="2dp"
+        android:id="@+id/rep_list_item_content">
 
         <ImageView
             android:id="@+id/representative_image"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="false"
-            android:layout_width="106dp"
-            android:layout_height="100dp"
-            android:padding="10dp" />
-
-        <TextView
-            android:id="@+id/representative_party"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight=".7"
-        android:layout_height="match_parent"
-        android:paddingLeft="10dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/representative_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:textColor="#222222"/>
-
-        <TextView
-            android:id="@+id/representative_district"
-            android:textColor="#444444"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/representative_website"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#2222ff" />
+            android:layout_width="125dp"
+            android:layout_height="136dp"
+            android:padding="10dp"
+            android:src="@drawable/barbara_boxer_circle_small"
+            android:elevation="0dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_weight=".1"
-                android:layout_height="match_parent"
-                android:src="@drawable/email_icon_small"/>
+            android:layout_width="0dp"
+            android:layout_weight=".7"
+            android:layout_height="match_parent"
+            android:paddingLeft="0dp"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/representative_email"
-                android:textColor="#222222"
-                android:layout_width="0dp"
-                android:layout_weight=".9"
+                android:id="@+id/representative_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp" />
+                android:textSize="20dp"
+                android:textColor="#EEEEEE"
+                android:text="Sen. Barbara Boxer"
+                android:fontFamily="serif"
+                android:layout_marginTop="1dp" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/representative_district"
+                android:textColor="#444444"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textSize="14dp"
+                android:text="California"/>
 
+            <TextView
+                android:id="@+id/representative_party"
+                android:textColor="#444444"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="Democrat"
+                android:scrollHorizontally="true"
+                android:ellipsize="end"
+                android:maxLines="1"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_weight=".1"
-                android:layout_height="match_parent"
-                android:src="@drawable/twitter_icon" />
+            <TextView
+                android:id="@+id/representative_website"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#2222ff"
+                android:text="boxer.senate.gov"
+                android:scrollHorizontally="true"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="14dp" />
 
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_weight=".9"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp" >
+                android:orientation="horizontal"
+                android:layout_marginTop="2dp">
 
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight=".1"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/email_icon_small"/>
 
                 <TextView
-                    android:id="@+id/representative_twitter"
-                    android:textColor="#444444"
-                    android:textSize="10dp"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/representative_email"
+                    android:textColor="#222222"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="-4dp"/>
-
-                <TextView
-                    android:id="@+id/representative_last_tweet"
-                    android:textColor="#111111"
-                    android:textSize="14dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_marginLeft="3dp"
+                    android:text=""
+                    android:scrollHorizontally="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"/>
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="2dp">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight=".1"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/twitter_icon"
+                    android:layout_gravity="center_vertical" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp" >
+
+
+                    <TextView
+                        android:id="@+id/representative_twitter"
+                        android:textColor="#444444"
+                        android:textSize="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="-2dp"
+                        android:text="\@SenatorBoxer"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"
+                        android:maxLines="1"/>
+
+                    <TextView
+                        android:id="@+id/representative_last_tweet"
+                        android:textColor="#111111"
+                        android:textSize="14dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="\@SenateDems stood united at the Supreme Court today to tell @Senate_GOPs: #DoYourJob"/>
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</FrameLayout>
+

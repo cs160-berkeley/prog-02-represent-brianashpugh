@@ -1,5 +1,6 @@
 package represent.www.represent;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -22,17 +23,16 @@ public class PhoneListenerService extends WearableListenerService {
 
         if (messageEvent.getPath().equalsIgnoreCase(REP_SELECTED_PATH)) {
 
-            String repName = new String(messageEvent.getData(), StandardCharsets.UTF_8);
+            String repId = new String(messageEvent.getData(), StandardCharsets.UTF_8);
 
-            Intent representativeViewIntent = new Intent(context, RepresentativeViewActivity.class);
-            representativeViewIntent.putExtra("REP_NAME", repName);
-            representativeViewIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(representativeViewIntent);
+            Intent representativeListIntent = new Intent("REP_SELECTED");
+            representativeListIntent.putExtra("REP_ID", repId);
+            sendBroadcast(representativeListIntent);
 
         } else if (messageEvent.getPath().equalsIgnoreCase(SHAKE_PATH)) {
-            Log.d("phone", "received shake message...");
-            Intent representativeListIntent = new Intent(context, RepresentativeList.class);
-            representativeListIntent.putExtra("SHUFFLE", true);
+            Log.d("phone", "Received shake message...");
+            Intent representativeListIntent = new Intent(context, LocationInputActivity.class);
+            representativeListIntent.putExtra("SHAKE", true);
             representativeListIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(representativeListIntent);
         } else {
